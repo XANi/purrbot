@@ -1,6 +1,6 @@
 # generate version number
 version=$(shell git describe --tags --long --always|sed 's/^v//')
-binfile=main
+binfile=purrbot
 
 all: glide.lock vendor
 	rm -rf _vendor

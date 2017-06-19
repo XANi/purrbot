@@ -4,6 +4,8 @@ import (
 	"github.com/op/go-logging"
 	"os"
 	//	"strings"
+	"github.com/XANi/go-yamlcfg"
+	"github.com/XANi/purrbot/config"
 	"github.com/XANi/purrbot/plugins/git"
 )
 
@@ -18,13 +20,18 @@ func main() {
 	logging.SetFormatter(stdout_log_format)
 
 	log.Debugf("version: %s", version)
-	c := git.Config{
-		SearchPath: []string{"$HOME/src/my/*"},
+	cfgFiles := []string{
+		"$HOME/.config/purrbot/config.yaml",
 	}
+	var cfg config.Config
+	err := yamlcfg.LoadConfig(cfgFiles, &cfg)
+	c := git.Config{
+		SearchPath: []string{"$HOME/src/my/*", "$HOME/src/lib/go/src/github.com/XANi/"},
+	}
+	log.Noticef("Config: %+v", cfg)
 	a, err := git.New(c)
 	if err != nil {
 		log.Errorf("can't start git plugin: %s", err)
 	}
-
 	a.Run()
 }

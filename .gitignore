@@ -43,7 +43,7 @@ _testmain.go
 *.prof
 *.out
 *.static
-main
+purrbot
 *.arm
 *.arm64
 *.386

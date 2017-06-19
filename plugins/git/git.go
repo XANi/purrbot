@@ -99,6 +99,7 @@ func (p Plugin)Run() error {
 	var nextRun time.Time
 	for {
 		nextRun = time.Now().Add(time.Duration(600) * time.Second)
+		// TODO check if repo still exists
 		for repoName, repo := range p.repos {
 			log.Noticef("Fetching %s", repoName)
 			err := repo.repo.Fetch()
