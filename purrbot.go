@@ -25,13 +25,15 @@ func main() {
 	}
 	var cfg config.Config
 	err := yamlcfg.LoadConfig(cfgFiles, &cfg)
-	c := git.Config{
-		SearchPath: []string{"$HOME/src/my/*", "$HOME/src/lib/go/src/github.com/XANi/"},
+	if err != nil {
+		log.Panicf("Config error: %s", err)
 	}
 	log.Noticef("Config: %+v", cfg)
-	a, err := git.New(c)
-	if err != nil {
-		log.Errorf("can't start git plugin: %s", err)
+	if pluginCfg, ok := cfg.Plugins["git"]; ok {
+		gp, err := git.New(pluginCfg)
+		if err != nil {
+			log.Errorf("can't start git plugin: %s", err)
+		}
+		gp.Run()
 	}
-	a.Run()
 }

@@ -8,7 +8,7 @@ func (c *Config) GetDefaultConfig() string {
 ---
 plugins:
   git:
-    paths:
+    search_path:
       - $HOME/src/*
 `
 }

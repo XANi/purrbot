@@ -16,6 +16,7 @@ type Config struct {
 	//update interval (in seconds). Key is substring of path, value is interval
 	UpdateInterval map[string]int `yaml:"update_interval"`
 	DefaultInterval int `yaml:"default_interval"`
+	valid bool
 }
 
 type repo struct {
@@ -38,10 +39,12 @@ func (g Plugin)add(path string) {
 
 
 
-func New(c Config) (*Plugin, error) {
+func New(rawCfg map[string]interface{}) (*Plugin, error) {
 	g := Plugin{
 		repos: make(map[string]*repo),
 	}
+	c := parseCfg(rawCfg)
+	log.Errorf("%+v",c)
 	for _, path :=  range c.SearchPath {
 		fullPath,_ := filepath.Abs(os.ExpandEnv(path))
 		// if main path is git dir, stop search there
