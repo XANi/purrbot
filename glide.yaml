@@ -3,3 +3,4 @@ package: github.com/XANi/purrbot
 import:
 - package: github.com/op/go-logging
 - package: github.com/XANi/go-gitcli
+- package: github.com/XANI/go-yamlcfg
