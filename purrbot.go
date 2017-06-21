@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/op/go-logging"
 	"os"
 	//	"strings"
 	"github.com/XANi/go-yamlcfg"
 	"github.com/XANi/purrbot/config"
 	"github.com/XANi/purrbot/plugins/git"
+	"github.com/XANi/purrbot/utils"
 )
 
 var version string
@@ -19,6 +21,9 @@ func main() {
 	logging.SetBackend(stderrFormatter)
 	logging.SetFormatter(stdout_log_format)
 
+	// TODO term detection ?
+	utils.UpdateXtermTitle(fmt.Sprintf("Purrbot v%s", version))
+
 	log.Debugf("version: %s", version)
 	cfgFiles := []string{
 		"$HOME/.config/purrbot/config.yaml",
@@ -28,6 +33,7 @@ func main() {
 	if err != nil {
 		log.Panicf("Config error: %s", err)
 	}
+
 	log.Noticef("Config: %+v", cfg)
 	if pluginCfg, ok := cfg.Plugins["git"]; ok {
 		gp, err := git.New(pluginCfg)
