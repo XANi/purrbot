@@ -2,8 +2,7 @@
 version=$(shell git describe --tags --long --always|sed 's/^v//')
 binfile=purrbot
 
-all: glide.lock vendor
-	rm -rf _vendor
+all:
 	go build -ldflags "-X main.version=$(version)" $(binfile).go
 	-@go fmt
 
@@ -13,13 +12,5 @@ static: glide.lock vendor
 arm:
 	GOARCH=arm go build  -ldflags "-X main.version=$(version) -extldflags \"-static\"" -o $(binfile).arm $(binfile).go
 	GOARCH=arm64 go build  -ldflags "-X main.version=$(version) -extldflags \"-static\"" -o $(binfile).arm64 $(binfile).go
-clean:
-	rm -rf vendor
-	rm -rf _vendor
-vendor: glide.lock
-	glide install && touch vendor
-glide.lock: glide.yaml
-	glide update && touch glide.lock
-glide.yaml:
 version:
 	@echo $(version)
